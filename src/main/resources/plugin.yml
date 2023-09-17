@@ -1,0 +1,4 @@
+name: TownyReligion
+version: '${project.version}'
+main: org.papiricoh.townyreligion.TownyReligion
+api-version: '1.20'
