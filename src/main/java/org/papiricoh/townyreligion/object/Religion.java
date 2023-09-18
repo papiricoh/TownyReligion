@@ -1,7 +1,6 @@
 package org.papiricoh.townyreligion.object;
 
 import com.palmergames.bukkit.towny.object.Town;
-import org.checkerframework.checker.units.qual.A;
 import org.papiricoh.townyreligion.object.god.God;
 
 import java.util.ArrayList;
