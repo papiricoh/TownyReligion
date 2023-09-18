@@ -27,15 +27,28 @@ public class Religion {
         this.main_god = mainGod;
     }
 
-    public Religion(String name, Town founding_town) {
+    public Religion(String name, Town founding_town, God god) {
         this.name = name;
         this.founding_town = founding_town;
         this.time_established = new Date();
         this.towns = new ArrayList<>();
         this.allies = new ArrayList<>();
         this.enemies = new ArrayList<>();
-        this.main_god = null;
+        this.main_god = god;
     }
 
+    public boolean containsTown(Town town) {
+        return this.towns.contains(town) || this.founding_town.equals(town);
+    }
 
+    public void addTown(Town town) {
+        if(!containsTown(town)) {
+            this.towns.add(town);
+        }
+
+    }
+
+    public void removeTown(Town town) {
+        this.towns.remove(town);
+    }
 }
