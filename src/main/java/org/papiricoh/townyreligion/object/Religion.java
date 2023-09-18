@@ -41,11 +41,12 @@ public class Religion {
         return this.towns.contains(town) || this.founding_town.equals(town);
     }
 
-    public void addTown(Town town) {
+    public boolean addTown(Town town) {
         if(!containsTown(town)) {
             this.towns.add(town);
+            return true;
         }
-
+        return false;
     }
 
     public void removeTown(Town town) {
