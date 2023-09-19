@@ -1,6 +1,7 @@
 package org.papiricoh.townyreligion.object;
 
 import com.palmergames.bukkit.towny.object.Town;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -14,6 +15,7 @@ import org.papiricoh.townyreligion.object.god.God;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 public class Religion {
     private String name;
@@ -125,8 +127,8 @@ public class Religion {
         return pope;
     }
 
-    public void setPope(OfflinePlayer pope) {
-        this.pope = pope;
+    public void setPope(UUID pope_uuid) {
+        this.pope = Bukkit.getOfflinePlayer(pope_uuid);
     }
 
     public boolean hasPope() {
