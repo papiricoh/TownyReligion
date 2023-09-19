@@ -3,6 +3,7 @@ package org.papiricoh.townyreligion.object;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
@@ -24,9 +25,10 @@ public class Religion {
     private Chest altar;
     private boolean active_boost = false;
     private SacredBook sacredBook;
+    private OfflinePlayer pope;
 
 
-    public Religion(@NotNull String name, @NotNull Town foundingTown, @NotNull Date timeEstablished, ArrayList<Town> towns, Religion father_religion, @NotNull God mainGod, Block altar, SacredBook sacredBook) {
+    public Religion(@NotNull String name, @NotNull Town foundingTown, @NotNull Date timeEstablished, ArrayList<Town> towns, Religion father_religion, @NotNull God mainGod, Block altar, SacredBook sacredBook, OfflinePlayer pope) {
         this.name = name;
         this.founding_town = foundingTown;
         this.time_established = timeEstablished;
@@ -35,6 +37,7 @@ public class Religion {
         this.main_god = mainGod;
         this.altar = this.configAltarBlock(altar);
         this.sacredBook = sacredBook;
+        this.pope = pope;
     }
 
 
@@ -46,6 +49,7 @@ public class Religion {
         this.main_god = god;
         this.altar = null;
         this.sacredBook = null;
+        this.pope = null;
     }
 
 
@@ -115,5 +119,21 @@ public class Religion {
 
     public Date getTime_established() {
         return time_established;
+    }
+
+    public OfflinePlayer getPope() {
+        return pope;
+    }
+
+    public void setPope(OfflinePlayer pope) {
+        this.pope = pope;
+    }
+
+    public boolean hasPope() {
+        return this.pope != null;
+    }
+
+    public boolean isActive_boost() {
+        return active_boost;
     }
 }
