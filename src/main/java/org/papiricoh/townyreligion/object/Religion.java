@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.papiricoh.townyreligion.object.book.SacredBook;
 import org.papiricoh.townyreligion.object.god.God;
 
@@ -22,11 +23,10 @@ public class Religion {
     private God main_god;
     private Chest altar;
     private boolean active_boost = false;
-
     private SacredBook sacredBook;
 
 
-    public Religion(String name, Town foundingTown, Date timeEstablished, ArrayList<Town> towns, Religion father_religion, God mainGod, Block altar, SacredBook sacredBook) {
+    public Religion(@NotNull String name, @NotNull Town foundingTown, @NotNull Date timeEstablished, ArrayList<Town> towns, Religion father_religion, @NotNull God mainGod, Block altar, SacredBook sacredBook) {
         this.name = name;
         this.founding_town = foundingTown;
         this.time_established = timeEstablished;
@@ -38,7 +38,7 @@ public class Religion {
     }
 
 
-    public Religion(String name, Town founding_town, Religion father_religion, God god) {
+    public Religion(@NotNull String name, @NotNull Town founding_town, Religion father_religion, @NotNull God god) {
         this.name = name;
         this.founding_town = founding_town;
         this.time_established = new Date();
@@ -77,6 +77,9 @@ public class Religion {
     public boolean containsTown(Town town) {
         return this.towns.contains(town) || this.founding_town.equals(town);
     }
+    public Town getFoundingTown() {
+        return founding_town;
+    }
 
     public boolean addTown(Town town) {
         if(!containsTown(town)) {
@@ -98,7 +101,19 @@ public class Religion {
         this.sacredBook = sacredBook;
     }
 
-    public void createSacredBook() {
+    public void createSacredBook(String title, String content) {
+        this.sacredBook = new SacredBook(title, content, this.main_god.getName());
+    }
 
+    public Religion getFather_religion() {
+        return father_religion;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Date getTime_established() {
+        return time_established;
     }
 }

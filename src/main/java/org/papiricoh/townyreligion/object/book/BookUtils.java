@@ -10,7 +10,7 @@ public class BookUtils {
     public static String replaceGodNameInContent(String content, String godName) {
         return content.replace("<god>", godName);
     }
-    private static List<String> splitContentIntoPages(String content) {
+    public static List<String> splitContentIntoPages(String content) {
         List<String> pages = new ArrayList<>();
         StringBuilder pageContent = new StringBuilder();
         int linesOnCurrentPage = 0;
