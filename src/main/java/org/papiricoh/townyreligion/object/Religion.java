@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Religion {
+    private UUID uuid;
     private String name;
     private Town founding_town;
     private Date time_established;
@@ -27,10 +29,10 @@ public class Religion {
     private Chest altar;
     private boolean active_boost = false;
     private SacredBook sacredBook;
-    private OfflinePlayer pope;
 
 
-    public Religion(@NotNull String name, @NotNull Town foundingTown, @NotNull Date timeEstablished, ArrayList<Town> towns, Religion father_religion, @NotNull God mainGod, Block altar, SacredBook sacredBook, OfflinePlayer pope) {
+    public Religion(@NotNull String string_uuid, @NotNull String name, @NotNull Town foundingTown, @NotNull Date timeEstablished, ArrayList<Town> towns, Religion father_religion, @NotNull God mainGod, Block altar, SacredBook sacredBook) {
+        this.uuid = UUID.fromString(string_uuid);
         this.name = name;
         this.founding_town = foundingTown;
         this.time_established = timeEstablished;
@@ -39,11 +41,11 @@ public class Religion {
         this.main_god = mainGod;
         this.altar = this.configAltarBlock(altar);
         this.sacredBook = sacredBook;
-        this.pope = pope;
     }
 
 
     public Religion(@NotNull String name, @NotNull Town founding_town, Religion father_religion, @NotNull God god) {
+        this.uuid = UUID.randomUUID();
         this.name = name;
         this.founding_town = founding_town;
         this.time_established = new Date();
@@ -51,7 +53,6 @@ public class Religion {
         this.main_god = god;
         this.altar = null;
         this.sacredBook = null;
-        this.pope = null;
     }
 
 
@@ -63,6 +64,10 @@ public class Religion {
             return chest;
         }
         return null;
+    }
+
+    public void setGod(God god) {
+        this.main_god = god;
     }
 
     public boolean offerToGod() {
@@ -96,7 +101,21 @@ public class Religion {
     }
 
     public void removeTown(Town town) {
-        this.towns.remove(town);
+        if(town.equals(this.founding_town)) {
+            if(this.towns.size() > 0) {
+                Town newFoundingTown = this.towns.get(0);
+                this.founding_town = newFoundingTown;
+                this.towns.remove(newFoundingTown);
+            }else {
+                this.founding_town = null;//TODO DELETE RELIGION
+            }
+        }else {
+            this.towns.remove(town);
+        }
+    }
+
+    public God getMain_god() {
+        return this.main_god;
     }
 
     public SacredBook getSacredBook() {
@@ -123,19 +142,15 @@ public class Religion {
         return time_established;
     }
 
-    public OfflinePlayer getPope() {
-        return pope;
-    }
-
-    public void setPope(UUID pope_uuid) {
-        this.pope = Bukkit.getOfflinePlayer(pope_uuid);
-    }
-
-    public boolean hasPope() {
-        return this.pope != null;
-    }
-
     public boolean isActive_boost() {
         return active_boost;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public ArrayList<Town> getTowns() {
+        return this.towns;
     }
 }
