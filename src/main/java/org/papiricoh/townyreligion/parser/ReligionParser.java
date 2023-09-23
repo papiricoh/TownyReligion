@@ -3,18 +3,50 @@ package org.papiricoh.townyreligion.parser;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.papiricoh.townyreligion.object.Religion;
 import org.papiricoh.townyreligion.object.god.God;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class ReligionParser {
+
+    public static ArrayList<God> loadGods(FileConfiguration config) {
+        ArrayList<God> gods = new ArrayList<>();
+
+        ConfigurationSection godsSection = config.getConfigurationSection("gods");
+        if (godsSection != null) {
+            for (String godName : godsSection.getKeys(false)) {
+                ConfigurationSection godSection = godsSection.getConfigurationSection(godName);
+
+                ConfigurationSection potionEffectSection = godSection.getConfigurationSection("potionEffect");
+                PotionEffect potionEffect = new PotionEffect(
+                        PotionEffectType.getByName(potionEffectSection.getString("type")),
+                        potionEffectSection.getInt("duration"),
+                        potionEffectSection.getInt("intensity")
+                );
+
+                Material material = Material.valueOf(godSection.getString("material"));
+                Material block = Material.valueOf(godSection.getString("block"));
+
+                God god = new God(godName, potionEffect, material, block);
+                gods.add(god);
+            }
+        }
+
+        return gods;
+    }
 
     public static Religion loadReligions(File file, ArrayList<God> gods){
         UUID uuid = null;

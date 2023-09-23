@@ -22,6 +22,7 @@ public final class TownyReligion extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         config = getConfig();
+        gods = ReligionParser.loadGods(config);
     }
 
     @Override
