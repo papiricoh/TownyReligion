@@ -1,13 +1,10 @@
 package org.papiricoh.townyreligion.object;
 
 import com.palmergames.bukkit.towny.object.Town;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -22,37 +19,28 @@ public class Religion {
     private UUID uuid;
     private String name;
     private Town founding_town;
-    private Date time_established;
     private ArrayList<Town> towns;
-    private Religion father_religion;
     private God main_god;
     private Chest altar;
     private boolean active_boost = false;
-    private SacredBook sacredBook;
 
 
-    public Religion(@NotNull String string_uuid, @NotNull String name, @NotNull Town foundingTown, @NotNull Date timeEstablished, ArrayList<Town> towns, Religion father_religion, @NotNull God mainGod, Block altar, SacredBook sacredBook) {
-        this.uuid = UUID.fromString(string_uuid);
+    public Religion(@NotNull UUID uuid, @NotNull String name, @NotNull Town foundingTown, ArrayList<Town> towns, @NotNull God mainGod, Block altar) {
+        this.uuid = uuid;
         this.name = name;
         this.founding_town = foundingTown;
-        this.time_established = timeEstablished;
         this.towns = towns;
-        this.father_religion = father_religion;
         this.main_god = mainGod;
         this.altar = this.configAltarBlock(altar);
-        this.sacredBook = sacredBook;
     }
 
 
-    public Religion(@NotNull String name, @NotNull Town founding_town, Religion father_religion, @NotNull God god) {
+    public Religion(@NotNull String name, @NotNull Town founding_town, @NotNull God god) {
         this.uuid = UUID.randomUUID();
         this.name = name;
         this.founding_town = founding_town;
-        this.time_established = new Date();
-        this.father_religion = father_religion;
         this.main_god = god;
         this.altar = null;
-        this.sacredBook = null;
     }
 
 
@@ -118,28 +106,13 @@ public class Religion {
         return this.main_god;
     }
 
-    public SacredBook getSacredBook() {
-        return sacredBook;
-    }
-
-    public void setSacredBook(SacredBook sacredBook) {
-        this.sacredBook = sacredBook;
-    }
-
-    public void createSacredBook(String title, String content) {
-        this.sacredBook = new SacredBook(title, content, this.main_god.getName());
-    }
-
-    public Religion getFather_religion() {
-        return father_religion;
-    }
-
     public String getName() {
         return name;
     }
 
-    public Date getTime_established() {
-        return time_established;
+
+    public Chest getAltar() {
+        return this.altar;
     }
 
     public boolean isActive_boost() {

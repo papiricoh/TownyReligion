@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.papiricoh.townyreligion.object.Religion;
 import org.papiricoh.townyreligion.object.god.God;
+import org.papiricoh.townyreligion.parser.ReligionParser;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,9 @@ public final class TownyReligion extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        for (Religion r :religions) {
+            ReligionParser.saveReligion(r, this);
+        }
     }
 
     public static Religion getReligion(Player player) {
