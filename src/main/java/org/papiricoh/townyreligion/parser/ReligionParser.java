@@ -30,11 +30,7 @@ public class ReligionParser {
                 ConfigurationSection godSection = godsSection.getConfigurationSection(godName);
 
                 ConfigurationSection potionEffectSection = godSection.getConfigurationSection("potionEffect");
-                PotionEffect potionEffect = new PotionEffect(
-                        PotionEffectType.getByName(potionEffectSection.getString("type")),
-                        potionEffectSection.getInt("duration"),
-                        potionEffectSection.getInt("intensity")
-                );
+                PotionEffect potionEffect = new PotionEffect(PotionEffectType.getByName(potionEffectSection.getString("type")), potionEffectSection.getInt("duration"), potionEffectSection.getInt("intensity"));
 
                 Material material = Material.valueOf(godSection.getString("material"));
                 Material block = Material.valueOf(godSection.getString("block"));

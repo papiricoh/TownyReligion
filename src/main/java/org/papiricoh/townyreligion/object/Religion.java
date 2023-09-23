@@ -44,7 +44,7 @@ public class Religion {
     }
 
 
-    private Chest configAltarBlock(Block altar) {
+    public Chest configAltarBlock(Block altar) {
         Block block = new Location(altar.getWorld(), altar.getX(), altar.getY(), altar.getZ()).getBlock();
 
         if(block.getType().equals(Material.CHEST)) {
