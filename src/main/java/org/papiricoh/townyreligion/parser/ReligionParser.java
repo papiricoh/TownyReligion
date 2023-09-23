@@ -17,7 +17,6 @@ import org.papiricoh.townyreligion.object.god.God;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class ReligionParser {
