@@ -10,10 +10,10 @@ import org.papiricoh.townyreligion.object.Religion;
 import org.papiricoh.townyreligion.object.god.God;
 import org.papiricoh.townyreligion.parser.ReligionParser;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public final class TownyReligion extends JavaPlugin {
-    private ArrayList<Religion> world_religions;
     private FileConfiguration config;
     private static ArrayList<Religion> religions;
     private static ArrayList<God> gods;
@@ -21,8 +21,19 @@ public final class TownyReligion extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        config = getConfig();
-        gods = ReligionParser.loadGods(config);
+        this.config = getConfig();
+        this.gods = ReligionParser.loadGods(config);
+        this.religions = new ArrayList<>();
+
+        File dataFolder = this.getDataFolder();
+        File religionsFolder = new File(dataFolder, "religions");
+        File[] files = religionsFolder.listFiles();
+        for (File file : files) {
+            if (file.isFile()) {
+                Religion religion = ReligionParser.loadReligions(file, gods);
+                this.religions.add(religion);
+            }
+        }
     }
 
     @Override
