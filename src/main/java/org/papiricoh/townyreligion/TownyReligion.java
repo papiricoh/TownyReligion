@@ -1,8 +1,10 @@
 package org.papiricoh.townyreligion;
 
+import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Resident;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,11 +31,15 @@ public final class TownyReligion extends JavaPlugin {
         File dataFolder = this.getDataFolder();
         File religionsFolder = new File(dataFolder, "religions");
         File[] files = religionsFolder.listFiles();
-        for (File file : files) {
-            if (file.isFile()) {
-                Religion religion = ReligionParser.loadReligions(file, gods);
-                this.religions.add(religion);
-            }
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    Religion religion = ReligionParser.loadReligions(file, gods);
+                    this.religions.add(religion);
+                }
+            }}
+        else {
+            this.getLogger().warning("Religions directory not created.");
         }
 
         ReligionCommand religionCommand = new ReligionCommand();
