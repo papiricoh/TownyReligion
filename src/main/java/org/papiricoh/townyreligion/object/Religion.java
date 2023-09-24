@@ -96,17 +96,20 @@ public class Religion {
         return false;
     }
 
-    public void removeTown(Town town) {
+    public boolean removeTown(Town town) {
         if(town.equals(this.founding_town)) {
             if(this.towns.size() > 0) {
                 Town newFoundingTown = this.towns.get(0);
                 this.founding_town = newFoundingTown;
                 this.towns.remove(newFoundingTown);
+                return true;
             }else {
-                this.founding_town = null;//TODO DELETE RELIGION
+                this.founding_town = null;
+                return false;//RETURNS FALSE TO DELETE RELIGION
             }
         }else {
             this.towns.remove(town);
+            return true;
         }
     }
 

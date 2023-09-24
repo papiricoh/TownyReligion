@@ -22,6 +22,18 @@ import java.util.UUID;
 
 public class ReligionParser {
 
+    public static boolean deleteReligionFile(String fileName, JavaPlugin plugin) {
+        File dataFolder = plugin.getDataFolder();
+
+        File religionFile = new File(dataFolder + File.separator + "religions", fileName);
+
+        if (religionFile.exists()) {
+            return religionFile.delete();
+        }
+
+        return false;
+    }
+
     public static ArrayList<God> loadGods(FileConfiguration config) {
         ArrayList<God> gods = new ArrayList<>();
 

@@ -37,7 +37,7 @@ public final class TownyReligion extends JavaPlugin {
 
         loadReligions();
 
-        ReligionCommand religionCommand = new ReligionCommand();
+        ReligionCommand religionCommand = new ReligionCommand(this);
         this.getCommand("tr").setExecutor(religionCommand);
         this.getCommand("tr").setTabCompleter(religionCommand);
 
@@ -50,7 +50,7 @@ public final class TownyReligion extends JavaPlugin {
                     ReligionParser.saveReligion(r, TownyReligion.this);
                 }
             }
-        }, 0L, 20L * 60 * 1);
+        }, 0L, 20L * 60 * 5);
     }
 
     private void loadReligions() {
@@ -63,7 +63,7 @@ public final class TownyReligion extends JavaPlugin {
                 if (file.isFile()) {
                     Religion religion = ReligionParser.loadReligions(file, gods);
                     this.religions.add(religion);
-                    this.getLogger().warning("Added religion " + religion.getUuid() + " Founding: " + religion.getFoundingTown());
+                    this.getLogger().info("Added religion " + religion.getUuid() + " Founding: " + religion.getFoundingTown());
                 }
             }}
         else {
