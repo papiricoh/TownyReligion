@@ -41,6 +41,7 @@ public class Religion {
         this.founding_town = founding_town;
         this.main_god = god;
         this.altar = null;
+        this.towns = new ArrayList<>();
     }
 
 

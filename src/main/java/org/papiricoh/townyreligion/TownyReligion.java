@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.papiricoh.townyreligion.commands.ReligionCommand;
 import org.papiricoh.townyreligion.object.Religion;
 import org.papiricoh.townyreligion.object.god.God;
@@ -45,10 +46,22 @@ public final class TownyReligion extends JavaPlugin {
         ReligionCommand religionCommand = new ReligionCommand();
         this.getCommand("tr").setExecutor(religionCommand);
         this.getCommand("tr").setTabCompleter(religionCommand);
+
+        BukkitScheduler scheduler = getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                getLogger().info("Guardando religiones...");
+                for (Religion r : religions) {
+                    ReligionParser.saveReligion(r, TownyReligion.this);
+                }
+            }
+        }, 0L, 20L * 60 * 5);
     }
 
     @Override
     public void onDisable() {
+        getLogger().info("Guardando religiones...");
         for (Religion r :religions) {
             ReligionParser.saveReligion(r, this);
         }

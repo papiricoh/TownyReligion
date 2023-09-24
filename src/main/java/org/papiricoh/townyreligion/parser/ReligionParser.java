@@ -112,7 +112,11 @@ public class ReligionParser {
     }
 
     public static void saveReligion(Religion religion, JavaPlugin plugin) {
-        File religionFile = new File(plugin.getDataFolder() + "/religions", religion.getUuid() + ".txt");
+        File religionsFolder = new File(plugin.getDataFolder(), "/religions");
+        if (!religionsFolder.exists()) {
+            religionsFolder.mkdirs();
+        }
+        File religionFile = new File(religionsFolder, religion.getUuid() + ".txt");
         try (FileWriter writer = new FileWriter(religionFile)) {
             writer.write("UUID: " + religion.getUuid() + "\n");
             writer.write("Name: " + religion.getName() + "\n");
