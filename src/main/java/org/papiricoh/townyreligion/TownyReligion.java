@@ -6,6 +6,7 @@ import com.palmergames.bukkit.towny.object.Resident;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.papiricoh.townyreligion.commands.ReligionCommand;
 import org.papiricoh.townyreligion.object.Religion;
 import org.papiricoh.townyreligion.object.god.God;
 import org.papiricoh.townyreligion.parser.ReligionParser;
@@ -15,8 +16,8 @@ import java.util.ArrayList;
 
 public final class TownyReligion extends JavaPlugin {
     private FileConfiguration config;
-    private static ArrayList<Religion> religions;
-    private static ArrayList<God> gods;
+    public static ArrayList<Religion> religions;
+    public static ArrayList<God> gods;
 
     @Override
     public void onEnable() {
@@ -34,6 +35,10 @@ public final class TownyReligion extends JavaPlugin {
                 this.religions.add(religion);
             }
         }
+
+        ReligionCommand religionCommand = new ReligionCommand();
+        this.getCommand("tr").setExecutor(religionCommand);
+        this.getCommand("tr").setTabCompleter(religionCommand);
     }
 
     @Override

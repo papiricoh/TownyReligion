@@ -2,3 +2,7 @@ name: TownyReligion
 version: '${project.version}'
 main: org.papiricoh.townyreligion.TownyReligion
 api-version: '1.20'
+commands:
+  tr:
+    description: Comando principal para gestionar religiones.
+    usage: /<command> <subcommand> [args]
