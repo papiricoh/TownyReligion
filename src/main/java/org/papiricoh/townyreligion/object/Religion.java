@@ -1,5 +1,6 @@
 package org.papiricoh.townyreligion.object;
 
+import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -8,11 +9,9 @@ import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.papiricoh.townyreligion.object.book.SacredBook;
 import org.papiricoh.townyreligion.object.god.God;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.UUID;
 
 public class Religion {
@@ -25,13 +24,18 @@ public class Religion {
     private boolean active_boost = false;
 
 
-    public Religion(@NotNull UUID uuid, @NotNull String name, @NotNull Town foundingTown, ArrayList<Town> towns, @NotNull God mainGod, Block altar) {
+    public Religion(@NotNull UUID uuid, @NotNull String name, @NotNull UUID foundingTown, ArrayList<Town> towns, @NotNull God mainGod, Block altar) {
         this.uuid = uuid;
         this.name = name;
-        this.founding_town = foundingTown;
-        this.towns = towns;
+        this.founding_town = TownyUniverse.getInstance().getTown(foundingTown);
+        if(towns == null) {
+            this.towns = new ArrayList<>();
+        }else {
+            this.towns = towns;
+        }
         this.main_god = mainGod;
         this.altar = this.configAltarBlock(altar);
+
     }
 
 
@@ -46,6 +50,9 @@ public class Religion {
 
 
     public Chest configAltarBlock(Block altar) {
+        if (altar == null) {
+            return null;
+        }
         Block block = new Location(altar.getWorld(), altar.getX(), altar.getY(), altar.getZ()).getBlock();
 
         if(block.getType().equals(Material.CHEST)) {

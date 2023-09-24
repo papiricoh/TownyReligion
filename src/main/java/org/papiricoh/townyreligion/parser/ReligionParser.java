@@ -1,6 +1,7 @@
 package org.papiricoh.townyreligion.parser;
 
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -55,17 +56,17 @@ public class ReligionParser {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("UUID: ")) {
-                    uuid = UUID.fromString(line.substring("UUID: ".length()));
+                    uuid = UUID.fromString(line.substring("UUID: ".length()).replace("\n", "").replace("\r", ""));
                 } else if (line.startsWith("Name: ")) {
-                    name = line.substring("Name: ".length());
+                    name = line.substring("Name: ".length()).replace("\n", "").replace("\r", "");
                 } else if (line.startsWith("Founding_town_uuid: ")) {
-                    foundingTownUuid = UUID.fromString(line.substring("Founding_town_uuid: ".length()));
+                    foundingTownUuid = UUID.fromString(line.substring("Founding_town_uuid: ".length()).replace("\n", "").replace("\r", ""));
                 } else if (line.startsWith("Towns: ")) {
-                    towns = parseTowns(line.substring("Towns: ".length()));
+                    towns = parseTowns(line.substring("Towns: ".length()).replace("\n", "").replace("\r", ""));
                 } else if (line.startsWith("God: ")) {
-                    god = toGod(line.substring("God: ".length()), gods);
+                    god = toGod(line.substring("God: ".length()).replace("\n", "").replace("\r", ""), gods);
                 } else if (line.startsWith("Altar: ")) {
-                    altar = parseBlock(line.substring("Altar: ".length()));
+                    altar = parseBlock(line.substring("Altar: ".length()).replace("\n", "").replace("\r", ""));
                 }
             }
         }catch (FileNotFoundException e) {
@@ -73,11 +74,14 @@ public class ReligionParser {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Religion religion = new Religion(uuid, name, TownyAPI.getInstance().getTown(foundingTownUuid), towns, god, altar);
+        Religion religion = new Religion(uuid, name, foundingTownUuid, towns, god, altar);
         return religion;
     }
 
     private static Block parseBlock(String substring) {
+        if(substring.equals("")) {
+            return null;
+        }
         String[] segments = substring.split(" | ");
         World world = Bukkit.getWorld(segments[0]);
         if(world == null) {
@@ -91,10 +95,13 @@ public class ReligionParser {
     }
 
     private static ArrayList<Town> parseTowns(String substring) {
+        if(substring.equals("")) {
+            return null;
+        }
         ArrayList<Town> towns = new ArrayList<>();
         String[] segments = substring.split(" | ");
         for (String s: segments) {
-            Town t = TownyAPI.getInstance().getTown(s);
+            Town t = TownyAPI.getInstance().getTown(UUID.fromString(s));
             if(t != null) {
                 towns.add(t);
             }
@@ -118,9 +125,9 @@ public class ReligionParser {
         }
         File religionFile = new File(religionsFolder, religion.getUuid() + ".txt");
         try (FileWriter writer = new FileWriter(religionFile)) {
-            writer.write("UUID: " + religion.getUuid() + "\n");
+            writer.write("UUID: " + religion.getUuid().toString() + "\n");
             writer.write("Name: " + religion.getName() + "\n");
-            writer.write("Founding_town_uuid: " + religion.getFoundingTown().getUUID() + "\n");
+            writer.write("Founding_town_uuid: " + religion.getFoundingTown().getUUID().toString() + "\n");
             writer.write("God: " + religion.getMain_god().getName() + "\n");
             writer.write(transcribeTowns(religion.getTowns()) + "\n");
             writer.write(transcribeBlock(religion.getAltar()) + "\n");

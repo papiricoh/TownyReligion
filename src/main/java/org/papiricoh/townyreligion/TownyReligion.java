@@ -27,21 +27,15 @@ public final class TownyReligion extends JavaPlugin {
         saveDefaultConfig();
         this.config = getConfig();
         this.gods = ReligionParser.loadGods(config);
-        this.religions = new ArrayList<>();
 
-        File dataFolder = this.getDataFolder();
-        File religionsFolder = new File(dataFolder, "religions");
-        File[] files = religionsFolder.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile()) {
-                    Religion religion = ReligionParser.loadReligions(file, gods);
-                    this.religions.add(religion);
-                }
-            }}
-        else {
-            this.getLogger().warning("Religions directory not created.");
+        boolean isTownyLoaded = false;
+        while(!isTownyLoaded) {
+            if(TownyUniverse.getInstance().getTowns().size() > 0) {
+                isTownyLoaded = true;
+            }
         }
+
+        loadReligions();
 
         ReligionCommand religionCommand = new ReligionCommand();
         this.getCommand("tr").setExecutor(religionCommand);
@@ -56,7 +50,25 @@ public final class TownyReligion extends JavaPlugin {
                     ReligionParser.saveReligion(r, TownyReligion.this);
                 }
             }
-        }, 0L, 20L * 60 * 5);
+        }, 0L, 20L * 60 * 1);
+    }
+
+    private void loadReligions() {
+        this.religions = new ArrayList<>();
+        File dataFolder = this.getDataFolder();
+        File religionsFolder = new File(dataFolder, "religions");
+        File[] files = religionsFolder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    Religion religion = ReligionParser.loadReligions(file, gods);
+                    this.religions.add(religion);
+                    this.getLogger().warning("Added religion " + religion.getUuid() + " Founding: " + religion.getFoundingTown());
+                }
+            }}
+        else {
+            this.getLogger().warning("Religions directory not created.");
+        }
     }
 
     @Override
