@@ -49,17 +49,20 @@ public class Religion {
     }
 
 
-    public Chest configAltarBlock(Block altar) {
-        if (altar == null) {
+    public Chest configAltarBlock(Block block) {
+        if (block == null) {
             return null;
         }
-        Block block = new Location(altar.getWorld(), altar.getX(), altar.getY(), altar.getZ()).getBlock();
 
         if(block.getType().equals(Material.CHEST)) {
             Chest chest = (Chest) block;
             return chest;
         }
         return null;
+    }
+
+    public void setAltar(Chest chest) {
+        this.altar = chest;
     }
 
     public void setGod(God god) {
@@ -71,7 +74,17 @@ public class Religion {
             this.active_boost = false;
             return false;
         }
+        if(this.altar.getType() != Material.CHEST) {
+            this.altar = null;
+            this.active_boost = false;
+            return false;
+        }
         Inventory altar_inventory = this.altar.getBlockInventory();
+        if(altar_inventory == null) {
+            this.altar = null;
+            this.active_boost = false;
+            return false;
+        }
         if(altar_inventory.contains(this.main_god.getMaterial()) || altar_inventory.getItem(altar_inventory.first(main_god.getMaterial())).getAmount() >= 4) {
             altar_inventory.remove(new ItemStack(main_god.getMaterial(), 4));
             this.active_boost = true;
@@ -136,5 +149,8 @@ public class Religion {
 
     public ArrayList<Town> getTowns() {
         return this.towns;
+    }
+    public boolean isFoundingTown(Town town) {
+        return this.founding_town.equals(town);
     }
 }

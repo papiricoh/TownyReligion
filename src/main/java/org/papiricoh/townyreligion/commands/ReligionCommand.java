@@ -4,6 +4,10 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -38,6 +42,54 @@ public class ReligionCommand implements CommandExecutor, TabCompleter {
         if (args.length == 0) {
             player.sendMessage("Use /tr help to display available commands.");
             return true;
+        }
+
+        if ("setAltar".equalsIgnoreCase(args[0])) {
+            Religion religion = TownyReligion.getReligion(player);
+
+            if(religion == null) {
+                player.sendMessage("You don't have a religion.");
+                return true;
+            }
+            boolean isMayor = TownyUniverse.getInstance().getResident(player.getUniqueId()).isMayor();
+            if(!isMayor) {
+                player.sendMessage("You are not the mayor.");
+                return true;
+            }
+
+            try {
+                Town town = TownyUniverse.getInstance().getResident(player.getUniqueId()).getTown();
+                if(!religion.isFoundingTown(town)) {
+                    player.sendMessage("Your town isn't the founding town of the religion.");
+                    return true;
+                }
+
+                Block targetBlock = player.getTargetBlock(null, 30); // The second parameter is the maximum distance to check.
+                if (targetBlock != null) {
+                    if(targetBlock.getType().equals(Material.CHEST)) {
+                        Block blockBelow = targetBlock.getRelative(BlockFace.DOWN);
+                        if(!blockBelow.getType().equals(religion.getMain_god().getBlock())) {
+                            player.sendMessage("Block below needs to be " + religion.getMain_god().getBlock().toString());
+                            return true;
+                        }
+                        religion.setAltar((Chest) targetBlock);
+                        player.sendMessage("Altar block set for " + religion.getName());
+                        return true;
+
+                    }else {
+                        player.sendMessage("Block needs to be a chest");
+                        return true;
+                    }
+
+                } else {
+                    player.sendMessage("No block in sight!");
+                    return true;
+                }
+
+            } catch (NotRegisteredException e) {
+                player.sendMessage("Internal error: Town does not exists.");
+                return true;
+            }
         }
 
         if ("info".equalsIgnoreCase(args[0])) {
@@ -165,6 +217,7 @@ public class ReligionCommand implements CommandExecutor, TabCompleter {
             suggestions.add("adopt");
             suggestions.add("leave");
             suggestions.add("info");
+            suggestions.add("setAltar");
 
         } else if (args.length == 2 && args[0].equalsIgnoreCase("create")) {
             for (God g : TownyReligion.gods) {
