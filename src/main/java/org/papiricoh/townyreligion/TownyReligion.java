@@ -10,9 +10,11 @@ import com.palmergames.bukkit.towny.object.WorldCoord;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.papiricoh.townyreligion.commands.ReligionCommand;
+import org.papiricoh.townyreligion.listeners.StatusScreenListener;
 import org.papiricoh.townyreligion.object.Religion;
 import org.papiricoh.townyreligion.object.god.God;
 import org.papiricoh.townyreligion.parser.ReligionParser;
@@ -57,6 +59,12 @@ public final class TownyReligion extends JavaPlugin {
 
             }
         }, 0L, 20L * 60 * 5);
+
+        registerListeners(Bukkit.getServer().getPluginManager());
+    }
+
+    private void registerListeners(PluginManager pm) {
+        pm.registerEvents(new StatusScreenListener(), this);
     }
 
     private void loadReligions() {
