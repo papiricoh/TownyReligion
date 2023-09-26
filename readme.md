@@ -16,4 +16,5 @@
 - `/tr changeGod GOD_NAME`: Change god of the religion to another see config to add more gods [config.yml](https://github.com/papiricoh/TownyReligion/blob/master/src/main/resources/config.yml).
 ### TODO Commands 
 - `/tr gods list`: Display the list of available gods.
-- Other commands related to managing and following religions. 
+- Other commands related to managing and following religions.
+![Tutorial](tutorial.png)
