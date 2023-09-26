@@ -2,42 +2,42 @@ gods:
   Illubatar:
     potionEffect:
       type: "ABSORPTION"
-      duration: 100
+      duration: 300
       intensity: 3
     material: "DIAMOND"
     block: "DIAMOND_BLOCK"
   Villios:
     potionEffect:
       type: "HERO_OF_THE_VILLAGE"
-      duration: 180
+      duration: 300
       intensity: 2
     material: "DIAMOND"
     block: "DIAMOND_BLOCK"
   Luckio:
     potionEffect:
       type: "LUCK"
-      duration: 120
+      duration: 300
       intensity: 2
     material: "DIAMOND"
     block: "DIAMOND_BLOCK"
   Costilia:
     potionEffect:
       type: "WATER_BREATHING"
-      duration: 90
+      duration: 300
       intensity: 5
     material: "DIAMOND"
     block: "DIAMOND_BLOCK"
   Jumilo:
     potionEffect:
       type: "JUMP"
-      duration: 120
+      duration: 300
       intensity: 2
     material: "DIAMOND"
     block: "DIAMOND_BLOCK"
   Warlium:
     potionEffect:
       type: "INCREASE_DAMAGE"
-      duration: 120
+      duration: 300
       intensity: 2
     material: "DIAMOND"
     block: "DIAMOND_BLOCK"

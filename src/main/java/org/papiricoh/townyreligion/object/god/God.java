@@ -33,7 +33,7 @@ public class God {
     }
 
 
-    public PotionEffect getPotion_effect_type() {
+    public PotionEffect getPotion_effect() {
         return potion_effect;
     }
 

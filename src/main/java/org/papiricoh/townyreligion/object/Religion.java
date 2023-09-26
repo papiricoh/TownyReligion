@@ -1,13 +1,20 @@
 package org.papiricoh.townyreligion.object;
 
 import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownBlock;
+import com.palmergames.bukkit.towny.object.WorldCoord;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.papiricoh.townyreligion.object.god.God;
 
@@ -86,8 +93,26 @@ public class Religion {
             return false;
         }
         if(altar_inventory.contains(this.main_god.getMaterial()) || altar_inventory.getItem(altar_inventory.first(main_god.getMaterial())).getAmount() >= 4) {
-            altar_inventory.remove(new ItemStack(main_god.getMaterial(), 4));
+            altar_inventory.remove(new ItemStack(main_god.getMaterial(), 2));
             this.active_boost = true;
+            ArrayList<Player> onlinePlayers = (ArrayList<Player>) Bukkit.getOnlinePlayers();
+            for (Player player : onlinePlayers) {
+                try {
+                    Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+
+                    if (resident.hasTown() && this.containsTown(resident.getTown())) {
+                        Town playerTown = resident.getTown();
+                        TownBlock townBlock = TownyUniverse.getInstance().getTownBlock(WorldCoord.parseWorldCoord(player.getLocation()));
+                        Town blockTown = townBlock.getTown();
+
+                        if(playerTown.equals(blockTown)) {
+                            player.addPotionEffect(this.main_god.getPotion_effect());
+                        }
+                    }
+                } catch (NotRegisteredException e) {
+
+                }
+            }
             return true;
         }
         this.active_boost = false;

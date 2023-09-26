@@ -4,6 +4,9 @@ import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownBlock;
+import com.palmergames.bukkit.towny.object.WorldCoord;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -48,7 +51,10 @@ public final class TownyReligion extends JavaPlugin {
                 getLogger().info("Guardando religiones...");
                 for (Religion r : religions) {
                     ReligionParser.saveReligion(r, TownyReligion.this);
+                    r.offerToGod();
                 }
+
+
             }
         }, 0L, 20L * 60 * 5);
     }
