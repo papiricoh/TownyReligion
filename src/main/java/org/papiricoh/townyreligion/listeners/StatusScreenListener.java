@@ -2,6 +2,7 @@ package org.papiricoh.townyreligion.listeners;
 import com.palmergames.adventure.text.Component;
 import com.palmergames.bukkit.towny.event.statusscreen.TownStatusScreenEvent;
 import com.palmergames.bukkit.towny.object.Town;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.papiricoh.townyreligion.TownyReligion;
@@ -14,7 +15,7 @@ public class StatusScreenListener implements Listener {
         Town town = event.getTown();
         for (Religion r : TownyReligion.religions) {
             if(r.containsTown(town)) {
-                event.getStatusScreen().addComponentOf("religion", Component.newline().append(Component.text(r.getName() + " God: " + r.getMain_god().getName())));
+                event.getStatusScreen().addComponentOf("religion", Component.newline().append(Component.text("Religion: " + ChatColor.GREEN + r.getName() + ChatColor.WHITE  + " God: " + ChatColor.GOLD + r.getMain_god().getName() + ChatColor.WHITE )));
             }
         }
 

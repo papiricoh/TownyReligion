@@ -43,7 +43,7 @@ public class ReligionParser {
                 ConfigurationSection godSection = godsSection.getConfigurationSection(godName);
 
                 ConfigurationSection potionEffectSection = godSection.getConfigurationSection("potionEffect");
-                PotionEffect potionEffect = new PotionEffect(PotionEffectType.getByName(potionEffectSection.getString("type")), potionEffectSection.getInt("duration"), potionEffectSection.getInt("intensity"));
+                PotionEffect potionEffect = new PotionEffect(PotionEffectType.getByName(potionEffectSection.getString("type")), potionEffectSection.getInt("duration") * 20, potionEffectSection.getInt("intensity"));
 
                 Material material = Material.valueOf(godSection.getString("material"));
                 Material block = Material.valueOf(godSection.getString("block"));
@@ -94,7 +94,7 @@ public class ReligionParser {
         if(substring.equals("")) {
             return null;
         }
-        String[] segments = substring.split(" | ");
+        String[] segments = substring.split(" - ");
         World world = Bukkit.getWorld(segments[0]);
         if(world == null) {
             return null;
@@ -111,7 +111,7 @@ public class ReligionParser {
             return null;
         }
         ArrayList<Town> towns = new ArrayList<>();
-        String[] segments = substring.split(" | ");
+        String[] segments = substring.split(" - ");
         for (String s: segments) {
             Town t = TownyAPI.getInstance().getTown(UUID.fromString(s));
             if(t != null) {
@@ -148,15 +148,15 @@ public class ReligionParser {
         }
     }
 
-    private static String transcribeBlock(Chest altar) {
+    private static String transcribeBlock(Block altar) {
         String string = "Altar: ";
         if(altar == null) {
             return "Altar: ";
         }
-        string += altar.getWorld().getName() + " | ";
-        string += altar.getX() + " | ";
-        string += altar.getY() + " | ";
-        string += altar.getZ() + " | ";
+        string += altar.getWorld().getName() + " - ";
+        string += altar.getX() + " - ";
+        string += altar.getY() + " - ";
+        string += altar.getZ() + " - ";
         return string.substring(0, string.length() - 3);
     }
 
@@ -166,7 +166,7 @@ public class ReligionParser {
             return "Towns: ";
         }
         for (Town t : towns) {
-            string += t.getUUID() + " | ";
+            string += t.getUUID() + " - ";
         }
         return string.substring(0, string.length() - 3);
     }

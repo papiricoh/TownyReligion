@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.papiricoh.townyreligion.object.god.God;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Religion {
@@ -27,7 +28,7 @@ public class Religion {
     private Town founding_town;
     private ArrayList<Town> towns;
     private God main_god;
-    private Chest altar;
+    private Block altar;
     private boolean active_boost = false;
 
 
@@ -56,19 +57,18 @@ public class Religion {
     }
 
 
-    public Chest configAltarBlock(Block block) {
+    public Block configAltarBlock(Block block) {
         if (block == null) {
             return null;
         }
 
         if(block.getType().equals(Material.CHEST)) {
-            Chest chest = (Chest) block;
-            return chest;
+            return block;
         }
         return null;
     }
 
-    public void setAltar(Chest chest) {
+    public void setAltar(Block chest) {
         this.altar = chest;
     }
 
@@ -86,16 +86,17 @@ public class Religion {
             this.active_boost = false;
             return false;
         }
-        Inventory altar_inventory = this.altar.getBlockInventory();
+        Inventory altar_inventory = ((Chest) this.altar.getState()).getBlockInventory();
         if(altar_inventory == null) {
             this.altar = null;
             this.active_boost = false;
             return false;
         }
-        if(altar_inventory.contains(this.main_god.getMaterial()) || altar_inventory.getItem(altar_inventory.first(main_god.getMaterial())).getAmount() >= 4) {
-            altar_inventory.remove(new ItemStack(main_god.getMaterial(), 2));
+
+        if(altar_inventory.contains(this.main_god.getMaterial()) && altar_inventory.getItem(altar_inventory.first(main_god.getMaterial())).getAmount() >= 4) {
+            altar_inventory.removeItem(new ItemStack(main_god.getMaterial(), 2));
             this.active_boost = true;
-            ArrayList<Player> onlinePlayers = (ArrayList<Player>) Bukkit.getOnlinePlayers();
+            List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
             for (Player player : onlinePlayers) {
                 try {
                     Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
@@ -160,7 +161,7 @@ public class Religion {
     }
 
 
-    public Chest getAltar() {
+    public Block getAltar() {
         return this.altar;
     }
 

@@ -108,7 +108,7 @@ public class ReligionCommand implements CommandExecutor, TabCompleter {
                             player.sendMessage("Block below needs to be " + religion.getMain_god().getBlock().toString());
                             return true;
                         }
-                        religion.setAltar((Chest) targetBlock);
+                        religion.setAltar(targetBlock);
                         player.sendMessage("Altar block set for " + religion.getName());
                         return true;
 
