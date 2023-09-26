@@ -58,7 +58,7 @@ public final class TownyReligion extends JavaPlugin {
 
 
             }
-        }, 0L, 20L * 60 * 1);
+        }, 0L, 20L * 60 * 3);
 
         registerListeners(Bukkit.getServer().getPluginManager());
     }
