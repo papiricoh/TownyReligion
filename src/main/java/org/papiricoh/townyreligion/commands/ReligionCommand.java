@@ -44,6 +44,42 @@ public class ReligionCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if ("changeGod".equalsIgnoreCase(args[0])) {
+            Religion religion = TownyReligion.getReligion(player);
+
+            if(religion == null) {
+                player.sendMessage("You don't have a religion.");
+                return true;
+            }
+            boolean isMayor = TownyUniverse.getInstance().getResident(player.getUniqueId()).isMayor();
+            if(!isMayor) {
+                player.sendMessage("You are not the mayor.");
+                return true;
+            }
+
+            try {
+                Town town = TownyUniverse.getInstance().getResident(player.getUniqueId()).getTown();
+                if(!religion.isFoundingTown(town)) {
+                    player.sendMessage("Your town isn't the founding town of the religion.");
+                    return true;
+                }
+
+                String godName = args[1];
+                God god = getGod(godName);
+                if(god == null) {
+                    player.sendMessage("God: " + godName + " doesn't exist");
+                    return true;
+                }
+                religion.setGod(god);
+                player.sendMessage("Changed God to: " + godName + " in " + religion.getName());
+                return true;
+            } catch (NotRegisteredException e) {
+                player.sendMessage("Internal error: Town does not exists.");
+                return true;
+            }
+
+        }
+
         if ("setAltar".equalsIgnoreCase(args[0])) {
             Religion religion = TownyReligion.getReligion(player);
 
@@ -218,8 +254,13 @@ public class ReligionCommand implements CommandExecutor, TabCompleter {
             suggestions.add("leave");
             suggestions.add("info");
             suggestions.add("setAltar");
+            suggestions.add("changeGod");
 
         } else if (args.length == 2 && args[0].equalsIgnoreCase("create")) {
+            for (God g : TownyReligion.gods) {
+                suggestions.add(g.getName());
+            }
+        }else if (args.length == 2 && args[0].equalsIgnoreCase("changeGod")) {
             for (God g : TownyReligion.gods) {
                 suggestions.add(g.getName());
             }
