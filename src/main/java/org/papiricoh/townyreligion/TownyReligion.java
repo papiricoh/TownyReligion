@@ -50,7 +50,6 @@ public final class TownyReligion extends JavaPlugin {
         scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
-                getLogger().info("Guardando religiones...");
                 for (Religion r : religions) {
                     ReligionParser.saveReligion(r, TownyReligion.this);
                     r.offerToGod();

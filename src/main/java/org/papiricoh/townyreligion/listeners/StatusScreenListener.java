@@ -51,7 +51,7 @@ public class StatusScreenListener implements Listener {
         DecimalFormat df = new DecimalFormat("###.#");
         String to_string = "Religions: ";
         for (String st: religions_towns.keySet()) {
-            to_string += st + ": " + ChatColor.AQUA + df.format((religions_towns.get(st) / religions_towns.size()) * 100) + "% " + ChatColor.WHITE;
+            to_string += st + ": " + ChatColor.AQUA + df.format(((double) religions_towns.get(st) /(double)  towns.size()) * 100) + "% " + ChatColor.WHITE;
         }
         event.getStatusScreen().addComponentOf("religion", Component.newline().append(Component.text(to_string)));
     }
