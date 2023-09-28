@@ -93,8 +93,8 @@ public class Religion {
             return false;
         }
 
-        if(altar_inventory.contains(this.main_god.getMaterial()) && altar_inventory.getItem(altar_inventory.first(main_god.getMaterial())).getAmount() >= 4) {
-            altar_inventory.removeItem(new ItemStack(main_god.getMaterial(), 2));
+        if(altar_inventory.contains(this.main_god.getMaterial()) && altar_inventory.getItem(altar_inventory.first(main_god.getMaterial())).getAmount() >= 1) {
+            altar_inventory.removeItem(new ItemStack(main_god.getMaterial(), 1));
             this.active_boost = true;
             List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
             for (Player player : onlinePlayers) {
