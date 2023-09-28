@@ -14,7 +14,7 @@
 - `/tr adopt RELIGION_NAME`: Adopt an existing town religion.
 - `/tr setAltar`: Set the altar for the town's religion.
 - `/tr changeGod GOD_NAME`: Change god of the religion to another see config to add more gods [config.yml](https://github.com/papiricoh/TownyReligion/blob/master/src/main/resources/config.yml).
-### TODO Commands 
-- `/tr gods list`: Display the list of available gods.
-- Other commands related to managing and following religions.
+- `/tr admin TOWN set RELIGION`: Set the religion of a town as OP.
+- `/tr gods`: Display a list of gods and effects.
+
 ![Tutorial](tutorial.png)
