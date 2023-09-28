@@ -91,7 +91,7 @@ public class ReligionCommand implements CommandExecutor, TabCompleter {
 
         if ("gods".equalsIgnoreCase(args[0])) {
             for (God g: TownyReligion.gods) {
-                player.sendMessage("God: " + ChatColor.DARK_RED + g.getName() + ChatColor.WHITE + " Effect: " + ChatColor.AQUA + g.getPotion_effect().getType().toString());
+                player.sendMessage("God: " + ChatColor.DARK_RED + g.getName() + ChatColor.WHITE + " Effect: " + ChatColor.AQUA + g.getPotion_effect().getType().getName().toString());
             }
             return true;
         }
