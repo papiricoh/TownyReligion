@@ -44,6 +44,14 @@ public class ReligionCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+
+        if ("gods".equalsIgnoreCase(args[0])) {
+            for (God g: TownyReligion.gods) {
+                player.sendMessage("God: " + ChatColor.DARK_RED + g.getName() + ChatColor.WHITE + " Effect: " + ChatColor.AQUA + g.getPotion_effect().getType().toString());
+            }
+            return true;
+        }
+
         if ("changeGod".equalsIgnoreCase(args[0])) {
             Religion religion = TownyReligion.getReligion(player);
 
@@ -255,6 +263,7 @@ public class ReligionCommand implements CommandExecutor, TabCompleter {
             suggestions.add("info");
             suggestions.add("setAltar");
             suggestions.add("changeGod");
+            suggestions.add("gods");
 
         } else if (args.length == 2 && args[0].equalsIgnoreCase("create")) {
             for (God g : TownyReligion.gods) {
