@@ -33,10 +33,12 @@ public class StatusScreenListener implements Listener {
         Nation nation = event.getNation();
         List<Town> towns = nation.getTowns();
         Map<String, Integer> religions_towns = new HashMap<>();
+        int number_of_total_towns = 0;
         for (Religion r: TownyReligion.religions) {
             int number_of_towns = 0;
             for (Town t: towns) {
                 if(r.containsTown(t)) {
+                    number_of_total_towns++;
                     number_of_towns++;
                 }
             }
@@ -45,13 +47,13 @@ public class StatusScreenListener implements Listener {
             }
         }
         if(religions_towns.size() < towns.size()) {
-            int to_add = towns.size() - religions_towns.size();
+            int to_add = towns.size() - number_of_total_towns;
             religions_towns.put("Atheism", to_add);
         }
         DecimalFormat df = new DecimalFormat("###.#");
-        String to_string = "Religions: ";
+        String to_string = ChatColor.DARK_GREEN + "Religions: ";
         for (String st: religions_towns.keySet()) {
-            to_string += st + ": " + ChatColor.AQUA + df.format(((double) religions_towns.get(st) /(double)  towns.size()) * 100) + "% " + ChatColor.WHITE;
+            to_string += ChatColor.GREEN + st + ": " + ChatColor.AQUA + df.format(((double) religions_towns.get(st) /(double)  towns.size()) * 100) + "% " + ChatColor.WHITE;
         }
         event.getStatusScreen().addComponentOf("religion", Component.newline().append(Component.text(to_string)));
     }

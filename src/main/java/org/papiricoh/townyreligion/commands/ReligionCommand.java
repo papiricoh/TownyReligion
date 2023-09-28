@@ -45,6 +45,50 @@ public class ReligionCommand implements CommandExecutor, TabCompleter {
         }
 
 
+        if ("admin".equalsIgnoreCase(args[0])) {
+            Town town = TownyUniverse.getInstance().getTown(args[1]);
+            if(!player.isOp()) {
+                player.sendMessage("You don't have permissions to execute this command");
+                return true;
+            }
+            if(town == null) {
+                player.sendMessage("Town " + args[1] + " does not exist");
+                return true;
+            }
+
+            if ("set".equalsIgnoreCase(args[2])) {
+                Religion religion = null;
+                for (Religion r: TownyReligion.religions) {
+                    if(r.getName().equals(args[3])) {
+                        religion = r;
+                    }
+                }
+                for (Religion r : TownyReligion.religions) {
+                    if(r.containsTown(town) && !r.equals(religion)) {
+                        boolean religionIsNotEmpty = r.removeTown(town);
+                        if (!religionIsNotEmpty) {
+                            TownyReligion.religions.remove(r);
+                            ReligionParser.deleteReligionFile(r.getUuid() + ".txt", townyReligion);
+                        }
+                    }
+                }
+                if (religion == null) {
+                    player.sendMessage("The religion does not exists.");
+                    return true;
+                }
+                if(!religion.containsTown(town)) {
+                    religion.addTown(town);
+                    player.sendMessage(town.getName() + " has adopted " + religion.getName());
+                    return true;
+                }else {
+                    player.sendMessage(town.getName() + " already is part of " + religion.getName());
+                    return true;
+                }
+
+            }
+            return true;
+        }
+
         if ("gods".equalsIgnoreCase(args[0])) {
             for (God g: TownyReligion.gods) {
                 player.sendMessage("God: " + ChatColor.DARK_RED + g.getName() + ChatColor.WHITE + " Effect: " + ChatColor.AQUA + g.getPotion_effect().getType().toString());
@@ -264,7 +308,18 @@ public class ReligionCommand implements CommandExecutor, TabCompleter {
             suggestions.add("setAltar");
             suggestions.add("changeGod");
             suggestions.add("gods");
+            suggestions.add("admin");
 
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("admin")) {
+            for (Town g : TownyUniverse.getInstance().getTowns()) {
+                suggestions.add(g.getName());
+            }
+        }else if (args.length == 3 && args[0].equalsIgnoreCase("admin")) {
+            suggestions.add("set");
+        } else if (args.length == 4 && args[2].equalsIgnoreCase("set")) {
+            for (Religion r : TownyReligion.religions) {
+                suggestions.add(r.getName());
+            }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("create")) {
             for (God g : TownyReligion.gods) {
                 suggestions.add(g.getName());
