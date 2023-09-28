@@ -6,7 +6,7 @@
 
     <groupId>org.papiricoh</groupId>
     <artifactId>TownyReligion</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1</version>
     <packaging>jar</packaging>
 
     <name>TownyReligion</name>
