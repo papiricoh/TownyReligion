@@ -49,9 +49,9 @@ public class StatusScreenListener implements Listener {
             religions_towns.put("Atheism", to_add);
         }
         DecimalFormat df = new DecimalFormat("###.#");
-        String to_string = "";
+        String to_string = "Religions: ";
         for (String st: religions_towns.keySet()) {
-            to_string += st + ": " + ChatColor.DARK_RED + df.format((religions_towns.get(st) / religions_towns.size()) * 100) + "% " + ChatColor.WHITE;
+            to_string += st + ": " + ChatColor.AQUA + df.format((religions_towns.get(st) / religions_towns.size()) * 100) + "% " + ChatColor.WHITE;
         }
         event.getStatusScreen().addComponentOf("religion", Component.newline().append(Component.text(to_string)));
     }
